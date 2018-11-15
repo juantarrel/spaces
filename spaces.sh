@@ -41,3 +41,15 @@ if [ $FIX -eq 1 ] && [ -f "$FILE" ]; then
     echo "DONE"
 fi
 
+#display graphically space errors
+if [ -f "$FILE" ]; then
+    while IFS= read -r line
+    do
+        #if there is no space issue on a line, just print the line
+        echo "$line" | sed -e '/[[:blank:]]\+$/q9' -e '/^[[:blank:]]\+/q7' >/dev/null
+        if [ $? -eq 0 ]; then
+            echo "$line"
+            continue
+        fi
+    done < "$FILE"
+fi
