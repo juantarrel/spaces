@@ -44,6 +44,8 @@ fi
 #display graphically space errors
 if [ -f "$FILE" ]; then
     LINES=0
+    REGEX_START="^[[:blank:]]+"
+    REGEX_END="[[:blank:]]+$"
     while IFS= read -r line
     do
         let LINES++
@@ -54,6 +56,23 @@ if [ -f "$FILE" ]; then
             echo "$line" >> temp.txt
             continue
         fi
+
+        #print line number
+        printf %4s "$LINES:" >> temp.txt
+
+        #print on the same line spaces/tabs as a red background at the beginning of line
+        if [[ "$line" =~ $REGEX_START ]]; then
+            echo -e -n "\e[41m$BASH_REMATCH\e[49m" >> temp.txt
+        fi
+
+
+        #print on the same line of line wich is correct - wich doesnt have spaces/tabs at the beginning
+        #and at the end of line
+
+
+        #print on the same line spaces/tabs as a red background at the end of line
+
+
     done < "$FILE"
 
     cat temp.txt
